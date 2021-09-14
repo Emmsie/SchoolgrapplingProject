@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Selected Schools</title>
+
+    <!--  CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+    <!--  JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<!--/*@thymesVar id="tournament" type="be.brussel.schoolgrappling.model.TournamentEntity"*/-->
+<!--/*@thymesVar id="school" type="be.brussel.schoolgrappling.model.SchoolEntity"*/-->
+<!--/*@thymesVar id="schools" type="be.brussel.schoolgrappling.model.SchoolEntity"*/-->
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title col-md-3" style="font-weight: bolder">Selected Schools</h1>
+                    <div class="row">
+                        <div class="col-md-7 ">
+                            <div class="col-md-offset-1">
+                                <form th:action="@{/schools/listSchools}">
+                                    <input type="text" class="form-control" name="keyword" id="keyword" size="50"
+                                           th:value="${keyword}" placeholder="filter by postal code or township"
+                                           required/>
+                                    <input type="submit" class="btn btn-primary" value="Search"/>
+                                    <input type="button" class="btn btn-primary" value="Clear" id="btnClear"
+                                           onclick="clearSearch()"/>
+                                </form>
+                            </div>
+
+                            <script type="text/javascript">
+                                function clearSearch() {
+                                    window.location = "[[@{/tournaments/schools}]]";
+                                }
+                            </script>
+                        </div>
+
+                        <div class="col-md-offset-9">
+                            <a class="btn btn-default" href="#"
+                               th:href="@{'/tournaments/' + ${tournament.id} + '/schools/new'}"
+                               role="button">Add</a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-10 form-group">
+                            <label>Select Schools:</label>
+                            <table class="table">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Postal Code</th>
+                                    <th>Township</th>
+                                    <th>Select</th>
+                                </tr>
+                                </thead>
+
+                                <th:block th:each="school : ${schools}">
+                                    <tr>
+                                        <td th:text="${school.schoolName}">SchoolName</td>
+                                        <td th:text="${school.postalCode}">PostalCode</td>
+                                        <td th:text="${school.township}">Township</td>
+                                        <td>
+                                            <div class="col-md-offset-2">
+                                                <label>
+                                                    <input type="checkbox" th:field="*{schools}"
+                                                           th:value="${school.id}"/>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                            </table>
+
+                            <!-- EERST OPLOSSING ZONDER CHECKBOXES (met option tag ipv input tag)-->
+                            <!--<label for="multiple-schools"></label>
+                            <select id="multiple-schools" type="list" class="form-control" th:field="*{schools}"
+                                    multiple="multiple">
+                                <option th:each="eachSchool : ${schools}"
+                                        th:value="${eachSchool.id}"
+                                        th:selected="${eachSchool.id}"
+                                        th:text="${eachSchool.schoolName} + ', ' + ${eachSchool.township}"
+                                        type="checked">School + City
+                                </option>
+                            </select>-->
+
+
+                            <!--
+                            Deze lege tabel is nodig om de tabel in het show template te vormen
+                            misschien is hier een oplossing voor maar weet niet hoe ik dit oplos zonder
+                            dit stuk code toe te voegen hier
+                            -->
+                            <div class="panel-body">
+                                <table>
+                                    <tr th:remove="all"></tr>
+
+                                    <tr th:remove="all"></tr>
+
+                                    <tr th:each="school : ${tournament.schools}"></tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-info" href="#"
+               th:href="@{'/tournaments/' + ${tournament.id} + '/update'}"
+               role="button">Update</a>
+
+            <a class="btn btn-default" href="#"
+               th:href="@{'/tournaments/'}"
+               role="button">Tournaments</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

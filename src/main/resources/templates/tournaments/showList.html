@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tournaments</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<!--/*@thymesVar id="tournaments" type="java.util.List"*/-->
+<!--/*@thymesVar id="tournament" type="be.brussel.schoolgrappling.model.TournamentEntity"*/-->
+<div class="container-fluid" style="margin-top: 2rem">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+
+                <div class="panel-heading">
+                    <h1 class="panel-title">Tournaments</h1>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form th:action="@{/tournaments/}">
+                                <input type="text" class="form-control" name="keyword" id="keyword" size="50"
+                                       th:value="${keyword}" placeholder="Search tournaments by name or location here."/>
+                                <input type="submit" class="btn btn-primary" value="Search"/>
+                                <input type="button" class="btn btn-primary" value="Clear" id="btnClear"
+                                       onclick="clearSearch()"/>
+                            </form>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+                        function clearSearch() {
+                            window.location = "[[@{/tournaments/}]]";
+                        }
+                    </script>
+                    <a class="btn btn-default" href="#"
+                       th:href="@{'/tournaments/new'}"
+                       role="button">New</a>
+
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="table-responsive" th:if="${not #lists.isEmpty(tournaments)}">
+                        <table class="table table-hover">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th>Tournament</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tr th:remove="all">
+                                <td>Tournament 1</td>
+                                <td><a href="#">View</a></td>
+                            </tr>
+
+                            <tr th:remove="all">
+                                <td>Tournament 2</td>
+                                <td><a href="#">View</a></td>
+                            </tr>
+
+                            <tr th:each="tournament : ${tournaments}">
+                                <td th:text="${tournament.tournamentName}">Tournament 3</td>
+                                <td><a href="#" th:href="@{'/tournaments/' + ${tournament.id} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/tournaments/' + ${tournament.id} + '/update'}">Update</a>
+                                </td>
+                                <td><a href="#" th:href="@{'/tournaments/' + ${tournament.id} + '/delete'}">Delete</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

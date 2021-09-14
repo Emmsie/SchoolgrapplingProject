@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Show Tournaments</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<!--/*@thymesVar id="tournament" type="be.brussel.schoolgrappling.model.TournamentEntity"*/-->
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h1 class="panel-title" th:text="${tournament.tournamentName}">Tournament Name</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Venue:</h4>
+                                <p th:text="${tournament.venue}">Bellekouter</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>City:</h4>
+                                <p th:text="${tournament.city}">Affligem</p>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Date:</h4>
+                                <p th:text="${tournament.date}">2021-05-15</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h4>Deadline date:</h4>
+                                <p th:text="${tournament.deadlineDate}">2021-04-22</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h4>Starting Hour:</h4>
+                                <p th:text="${tournament.startingHour}">09:00</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Max Capacity:</h4>
+                                <p th:text="${tournament.maxCapacity}">377</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Max Pool:</h4>
+                                <p th:text="${tournament.maxPool}">8</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Price:</h4>
+                                <p th:text="${tournament.price}">3.00</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Grade Morning:</h4>
+                                <p th:text="${tournament.gradeMorning.name}">1e primary</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Grade Afternoon:</h4>
+                                <p th:text="${tournament.gradeAfternoon.name}">2e primary</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Selected Schools</h1>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+
+                                <table class="table table-hover">
+                                    <label>Currently selected schools:</label>
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Township</th>
+                                        <th>E-mail</th>
+                                        <th>Phone</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tr th:remove="all">
+                                        <td>KA Koekelberg</td>
+                                        <td>Brussel</td>
+                                        <td>kak@outlook.com</td>
+                                        <td>043928856</td>
+                                    </tr>
+
+                                    <tr th:remove="all">
+                                        <td>KA Dilbeek</td>
+                                        <td>Dilbeek</td>
+                                        <td>kadilbeek@outlook.com</td>
+                                        <td>046322355</td>
+                                    </tr>
+
+                                    <tr th:each="school : ${tournament.schools}">
+                                        <td th:text="${school.schoolName}">KA Jette</td>
+                                        <td th:text="${school.township}">Jette</td>
+                                        <td th:text="${school.schoolEmail}">kajette@outlook.com</td>
+                                        <td th:text="${school.schoolPhoneNumber}">0422526522</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Description (Dutch)</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p th:text="${tournament.getDutchDescription}">Lorem ipsum dolor sit amet, consectetuer adipiscing
+                                    elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus
+                                    et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
+                                    nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede
+                                    justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+                                    imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.
+                                    Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate
+                                    eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac,
+                                    enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus
+                                    viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam
+                                    ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam
+                                    rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
+                                    sit amet adipiscing sem neque sed ipsum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Description (French)</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p th:text="${tournament.getFrenchDescription}">Lorem ipsum dolor sit amet, consectetuer
+                                    adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque
+                                    penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+                                    ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.
+                                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
+                                    rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
+                                    pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean
+                                    vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae,
+                                    eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
+                                    Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
+                                    Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
+                                    Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper
+                                    libero, sit amet adipiscing sem neque sed ipsum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/tournaments/'}"
+                   role="button">See All Tournaments</a>
+
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/tournaments/' + ${tournament.id} + '/update'}"
+                   role="button">Update</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

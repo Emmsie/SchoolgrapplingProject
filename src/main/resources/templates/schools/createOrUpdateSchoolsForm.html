@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create/Edit School</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--/*@thymesVar id="school" type="be.brussel.schoolgrappling.model.SchoolEntity"*/-->
+<!--/*@thymesVar id="contacts" type="be.brussel.schoolgrappling.model.ContactEntity"*/-->
+<div class="container-fluid" style="margin: 20px auto">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form th:object="${school}" th:action="@{/schools/new}" method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="panel-group">
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            <h1 class="panel-title">School</h1>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <label>Name Of The School: </label>
+                                <label th:text="${school.schoolName}">Name:</label>
+
+                                <label>
+                                    <input type="text" class="form-control" th:field="*{schoolName}" th:onerror="has-error"/>
+                                </label>
+                                <span th:if="${#fields.hasErrors('schoolName')}" th:errors="*{schoolName}">Name validation</span>
+                                <span th:if="${errorMessageSchoolAlreadyInDB}"
+                                      th:text="${errorMessageSchoolAlreadyInDB}">School exception</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label>Location:</label>
+                                <label>
+                                    <h5>Address: </h5>
+                                    <input type="text" class="form-control" th:field="*{address}"/>
+                                </label>
+                                <label>
+                                    <h5>Township: </h5>
+                                    <input type="text" class="form-control" th:field="*{township}"/>
+                                </label>
+                                <label>
+                                    <h5>Postal code: </h5>
+                                    <input type="number" min="1000" max="9999" class="form-control"
+                                           th:field="*{postalCode}"/>
+                                </label>
+                                <label>
+                                    <h5>Brussels school number: </h5>
+                                    <input type="number" class="form-control" th:field="*{brusselsSchoolNumber}"/>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label>Contact:</label>
+                                <label>Email:</label>
+                                <label>
+                                    <input type="email" class="form-control" th:field="*{schoolEmail}"/>
+                                </label>
+                                <span th:if="${#fields.hasErrors('schoolEmail')}" th:errors="*{schoolEmail}">Email validation</span>
+                                <span th:if="${errorMessageEmailNotValid}" th:text="${errorMessageEmailNotValid}">Email exception</span>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>Phone number:</label>
+                                <label>
+                                    <input type="text" class="form-control" th:field="*{schoolPhoneNumber}"/>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Contact persons</h1>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="col-md-10 form-group">
+                                <label>Select Contacts:</label>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th></th>
+                                        <th>Function</th>
+                                        <th>Select</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+
+                                <div style="overflow: scroll; overflow-x: auto; height: 300px; position: relative;">
+                                <table class="table">
+                                    <th:block th:each="contact: ${contacts}">
+                                        <tr>
+                                            <td th:text="${contact.firstName}">first name</td>
+                                            <td th:text="${contact.lastName}">last name</td>
+                                            <td th:text="${contact.function}">function</td>
+                                            <td>
+                                                <div class="col-md-offset-2">
+                                                    <label>
+                                                        <input type="checkbox" th:field="*{contactPersons}"
+                                                               th:value="${contact.id}"/>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit School</button>
+
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/schools/listSchools'}" role="button">See All Schools</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

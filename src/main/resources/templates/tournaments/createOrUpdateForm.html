@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create/Edit Tournament</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--/*@thymesVar id="tournament" type="be.brussel.schoolgrappling.model.TournamentEntity"*/-->
+<!--/*@thymesVar id="schools" type="be.brussel.schoolgrappling.model.SchoolEntity"*/-->
+<div class="container-fluid" style="margin: 20px auto">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form th:object="${tournament}" th:action="@{/tournaments/new}" method="post">
+
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p>Please correct errors below</p>
+                </div>
+                <input type="hidden" th:field="*{id}"/>
+                <div class="col-md-offset-0 alert alert-info">
+                    <span>
+                        <ul style="list-style-type: none">
+                            <li th:each="err : ${#fields.errors()}"
+                                th:text="${err}"></li>
+                        </ul>
+                    </span>
+                </div>
+                <div class="panel-group">
+                    <div class="panel panel-primary main-component">
+
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Tournament</h1>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Name of the tournament:</label>
+                                    <label>
+                                        <input type="text" class="form-control" th:field="*{tournamentName}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                    <span th:if="${#fields.hasErrors('tournamentName')}"
+                                          th:errors="*{tournamentName}">Name validation</span>
+                                    <span th:if="${errorMessageNameAlreadyInDB}"
+                                          th:text="${errorMessageNameAlreadyInDB}">Tournament exception</span>
+                                </div>
+
+                                <div class="col-md-3 form-group">
+                                    <label>Venue:</label>
+                                    <label>
+                                        <input type="text" class="form-control" th:field="*{venue}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-3 form-group">
+                                    <label>City:</label>
+                                    <label>
+                                        <input type="text" class="form-control" th:field="*{city}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Date of tournament:</label>
+                                    <label>
+                                        <input type="date" class="form-control" th:field="*{date}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <label>Deadline subscription:</label>
+                                    <label>
+                                        <input type="date" class="form-control" th:field="*{deadlineDate}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-3 form-group">
+                                    <label>Starting Hour:</label>
+                                    <label>
+                                        <input type="time" class="form-control" th:field="*{startingHour}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Max Capacity:</label>
+                                    <label>
+                                        <input type="text" class="form-control" th:field="*{maxCapacity}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Max Pool:</label>
+                                    <label>
+                                        <input type="number" class="form-control" th:field="*{maxPool}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Price:</label>
+                                    <label>
+                                        <input type="number" class="form-control" th:field="*{price}"
+                                               th:onerror="has-error"/>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Morning:</label>
+                                </div>
+                                <div class="col-md-9 form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <select class="form-control" th:field="*{gradeMorning}">
+                                                <option th:each="gradeValue : ${T(be.brussel.schoolgrappling.model.Grade).values()}"
+                                                        th:value="${gradeValue.name()}"
+                                                        th:text="${gradeValue.getName()}">Grade
+                                                </option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Afternoon:</label>
+                                </div>
+                                <div class="col-md-9 form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <select class="form-control" th:field="*{gradeAfternoon}">
+                                                <option th:each="gradeValue : ${T(be.brussel.schoolgrappling.model.Grade).values()}"
+                                                        th:value="${gradeValue.name()}"
+                                                        th:text="${gradeValue.getName()}">Grade
+                                                </option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary sub-component">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Schools for tournament</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12 form-group">
+                                <table class="table col-md-offset-0.5">
+                                    <thead>
+                                    <tr>
+                                        <th>Name of school</th>
+                                        <th>Postal Code</th>
+                                        <th>Township</th>
+                                        <th>Select</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+
+                                <div style="overflow: scroll; overflow-x: auto; height: 300px; position: relative;">
+                                    <table class="table">
+                                        <tbody>
+                                        <th:block th:each="school : ${schools}">
+                                            <tr>
+                                                <td th:text="${school.schoolName}">SchoolName</td>
+                                                <td th:text="${school.postalCode}">PostalCode</td>
+                                                <td th:text="${school.township}">Township</td>
+                                                <td>
+                                                    <label class="col-md-offset">
+                                                        <input type="checkbox" th:field="*{schools}"
+                                                               th:value="${school.id}"/>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="panel-body">
+                                    <table>
+                                        <tr th:remove="all"></tr>
+
+                                        <tr th:remove="all"></tr>
+
+                                        <tr th:each="school : ${tournament.schools}"></tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Description (Dutch) </h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label style="width: 100%">
+                                    <!-- todo -> oplossing zoeken voor een algemene uitleg in zowel nederlands als frans. -->
+                                    <textarea class="form-control" rows="3"
+                                              th:field="*{dutchDescription}"></textarea>
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Description (French) </h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label style="width: 100%">
+                                    <!-- todo -> oplossing zoeken voor een algemene uitleg in zowel nederlands als frans. -->
+                                    <textarea class="form-control" rows="3"
+                                              th:field="*{frenchDescription}"></textarea>
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" name="main-save" value="Save" class="btn btn-primary">Submit</button>
+
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/tournaments/'}" role="button">Tournaments List</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
